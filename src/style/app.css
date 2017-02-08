@@ -1,0 +1,53 @@
+.app {
+}
+.tsinfolink {
+    position:absolute;
+    right:0px;
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    text-align: center;
+    color: white;
+    background: #C0C0C0;
+    border-style: solid;
+    border-width: 1px;
+    margin-top: 25px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.timebox-label {
+    font-family: NotoSansBold,Helvetica,Arial;
+    font-size: 11px;
+    text-align: right;
+}
+
+.toggle-button-template.toggle-button-no {
+    background-color: silver;
+}
+
+.toggle-button-template.toggle-button-yes {
+    background-color: #8DC63F;
+}
+.toggle-button-template {
+    -webkit-border-radius: 14px;
+    -moz-border-radius: 14px;
+    -ms-border-radius: 14px;
+    -o-border-radius: 14px;
+    border-radius: 14px;
+    cursor: pointer;
+    display: inline-block;
+    height: 18px;
+    text-align: left;
+    width: 32px;
+}
+
+.clear-button {
+    border-top-left-radius: 0px!important;
+    border-bottom-left-radius: 0px!important;
+}
+
+.selected-button {
+    border-top-right-radius: 0px!important;
+    border-bottom-right-radius: 0px!important;
+}
