@@ -16,8 +16,6 @@ Ext.define("timebox-creator", {
     overflowY: 'auto',
                         
     launch: function() {
-        var me = this;
-
 
         this.projectUtility = Ext.create('CA.agile.technicalservices.util.ProjectUtility', {
             listeners: {
@@ -277,7 +275,9 @@ Ext.define("timebox-creator", {
             timeboxesCreated = 0;
         Ext.Array.each(results, function(r){
             if (Ext.isString(r)){
-                failures.push(r);
+                if (!Ext.Array.contains(failures, r)){
+                    failures.push(r);
+                }
             } else {
                 timeboxesCreated++;
             }
@@ -285,9 +285,10 @@ Ext.define("timebox-creator", {
 
         var msg = Ext.String.format("{0} of {1} timeboxes created successfully.", timeboxesCreated, results.length);
         if (timeboxesCreated < results.length){
-            msg += Ext.String.format("<br/><br/>{0} timeboxes were not created: <br/>", failures.length);
+            msg += Ext.String.format("<br/><br/>{0} timeboxes were not created for the following reason(s): <br/>", results.length - timeboxesCreated);
             msg += failures.join('<br/>');
-            Rally.ui.notify.Notifier.showWarning({html: msg});
+            this.logger.log('ShowWarning ', msg);
+            Rally.ui.notify.Notifier.showWarning({message: msg, allowHTML: true});
         } else {
             Rally.ui.notify.Notifier.show({message: msg});
         }
@@ -362,7 +363,12 @@ Ext.define("timebox-creator", {
                 columnCfgs: [
                     'Name',
                     'Project'
-                ]
+                ],
+                bulkEditConfig: {
+                    items: [{
+                        xtype: 'timeboxbulkdelete'
+                    }]
+                }
             },
             height: Math.max(gridHeight, 200),
             width: '95%'

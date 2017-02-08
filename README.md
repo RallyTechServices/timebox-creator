@@ -1,7 +1,7 @@
 #Timebox Creator
 
 ## Summary/Description
-App that allows for creation of aligned timeboxes (Releases or Iterations) for a selected group of projects.  
+App that allows for creation of aligned timeboxes (Releases or Iterations) for a selected group of projects.  The grid for timeboxes include Bulk Edit and Bulk Delete functionality.  
 
 ![ScreenShot](./images/timebox-creator.png)
 Select the timebox type from the "New" dropdown
