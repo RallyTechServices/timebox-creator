@@ -19,15 +19,18 @@ Ext.define('CA.agile.technicalservices.utils.bulkmenu.TimeboxBulkDelete', {
 
                         bulkUpdateStore.removeAll();
 
+                        Rally.getApp().setLoading("Deleting...");
                         bulkUpdateStore.sync().then({
                             success: function(batch) {
                                 this.onSuccess(this.records, []);
                             },
                             failure: function(batch){
-                                console.log('failure', batch);
                                 this.onSuccess(this.records, batch.exceptions);
                             },
                             scope: this
+                        }).always(function(){
+                            Rally.getApp().setLoading(false);
+                            Rally.getApp()._buildGrid();
                         });
                     },
                     scope: this
