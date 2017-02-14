@@ -326,7 +326,7 @@ Ext.define("timebox-creator", {
 
         this.logger.log('_addGrid height, timeboxType', height, models, selectorBoxHeight, gridHeight);
 
-        var gridboardStateId=  models[0] + '-gb';
+        var gridboardStateId=  models[0] + '-gbs';
 
         this.logger.log('gridboardStateId', gridboardStateId);
         this.add({
@@ -340,7 +340,7 @@ Ext.define("timebox-creator", {
                 ptype: 'rallygridboardinlinefiltercontrol',
                 inlineFilterButtonConfig: {
                     stateful: true,
-                    stateId: models[0] + '-filters',
+                    stateId: models[0] + '-filter',
                     modelNames: models,
                     inlineFilterPanelConfig: {
                         quickFilterPanelConfig: {
@@ -356,7 +356,7 @@ Ext.define("timebox-creator", {
                 headerPosition: 'left',
                 modelNames: models,
                 stateful: true,
-                stateId: models[0] + '-columns'
+                stateId: models[0] + '-column'
             }],
             gridConfig: {
                 store: store,
