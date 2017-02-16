@@ -24,12 +24,12 @@ Ext.define('CA.agile.technicalservices.utils.bulkmenu.TimeboxBulkDelete', {
                             success: function(batch) {
                                 this.onSuccess(this.records, []);
                                 Rally.getApp().setLoading(false);
-                                Rally.getApp()._buildGrid();
+                                //Rally.getApp()._buildGrid();
                             },
                             failure: function(batch){
                                 this.onSuccess(this.records, batch.exceptions);
                                 Rally.getApp().setLoading(false);
-                                Rally.getApp()._buildGrid();
+                                //Rally.getApp()._buildGrid();
                             },
                             scope: this
                         });

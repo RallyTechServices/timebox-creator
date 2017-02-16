@@ -360,16 +360,28 @@ Ext.define("timebox-creator", {
             }],
             gridConfig: {
                 store: store,
+                listeners: {
+                    afterbusbulkupdate: function(){
+                        console.log('afterbusbulkupdate');
+                    },
+                    afterbusremove: function(){
+                        console.log('afterbusremovev');
+                    }
+                },
                 columnCfgs: [
                     'Name',
                     'Project'
                 ],
                 bulkEditConfig: {
+                    onActionComplete: function(){  Rally.getApp()._buildGrid(); },
                     items: [{
                         xtype: 'timeboxbulkdelete'
+
                     }]
-                }
+                },
+
             },
+
             height: Math.max(gridHeight, 200),
             width: '95%'
         });
