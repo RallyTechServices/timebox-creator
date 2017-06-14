@@ -5,6 +5,7 @@ Ext.define("timebox-creator", {
     defaults: { margin: 10 },
     items: [
         {xtype:'container',itemId:'selector_box', layout: 'hbox', dock: 'top'},
+        {xtype: 'container', itemId:'message_box'},
         {xtype:'container',itemId:'grid_box'}
     ],
 
@@ -14,7 +15,7 @@ Ext.define("timebox-creator", {
 
     overflowX: 'hidden',
     overflowY: 'auto',
-                        
+
     launch: function() {
 
         this.projectUtility = Ext.create('CA.agile.technicalservices.util.ProjectUtility', {
@@ -136,6 +137,11 @@ Ext.define("timebox-creator", {
             }
         });
 
+        var messageBox = this.down('#message_box');
+        messageBox.add({
+          xtype: 'messagepanel'
+        });
+
         this._buildGrid();
 
     },
@@ -225,6 +231,8 @@ Ext.define("timebox-creator", {
         var projects = Ext.Array.unique(this.getTimeboxProjects());
         this.logger.log('_addTimeboxes', projects, timeboxAttributes);
 
+        this.down('messagepanel').collapse();
+
         this.setLoading('Creating timeboxes...');
         Rally.data.ModelFactory.getModel({
             type: this.getTimeboxType(),
@@ -238,7 +246,9 @@ Ext.define("timebox-creator", {
                 }, this);
 
                 Deft.Promise.all(promises).then({
-                    success: this.showSuccess,
+                    success: function(results){
+                        this.showSuccess(results, projects);
+                    },
                     failure: this.showErrorNotification,
                     scope: this
                 }).always(function(){
@@ -269,32 +279,46 @@ Ext.define("timebox-creator", {
         });
         return deferred.promise;
     },
-    showSuccess: function(results){
+    showSuccess: function(results, projects){
         this.logger.log('showSuccess', results);
         var failures = [],
-            timeboxesCreated = 0;
+            failedProjects = [],
+            timeboxesCreated = 0,
+            projectIdx = 0;
+
         Ext.Array.each(results, function(r){
             if (Ext.isString(r)){
                 if (!Ext.Array.contains(failures, r)){
                     failures.push(r);
                 }
+                failedProjects.push(projects[projectIdx]);
             } else {
                 timeboxesCreated++;
             }
+            projectIdx++;
         });
 
         var msg = Ext.String.format("{0} of {1} timeboxes created successfully.", timeboxesCreated, results.length);
         if (timeboxesCreated < results.length){
             msg += Ext.String.format("<br/><br/>{0} timeboxes were not created for the following reason(s): <br/>", results.length - timeboxesCreated);
             msg += failures.join('<br/>');
-            this.logger.log('ShowWarning ', msg);
-            Rally.ui.notify.Notifier.showWarning({message: msg, allowHTML: true});
+            msg += "Timeboxes were not created for the following projects:<br/>"
+            this.logger.log('ShowWarning ', this.down('messagepanel'), msg);
+            failedProjects = Ext.Array.map(failedProjects, function(p){ return this.projectUtility.getProjectName(p); }, this);
+            this.down('messagepanel').showError(msg, failedProjects);
+
         } else {
             Rally.ui.notify.Notifier.show({message: msg});
         }
     },
     showErrorNotification: function(msg){
         Rally.ui.notify.Notifier.showError({message: msg});
+    },
+    displayFailedProjects: function(message, projects){
+        this.down('#message_box').add({
+          xtype: 'container',
+          html: message
+        });
     },
     _buildGrid: function(){
 
@@ -402,9 +426,9 @@ Ext.define("timebox-creator", {
         if ( this.about_dialog ) { this.about_dialog.destroy(); }
         this.about_dialog = Ext.create('Rally.technicalservices.InfoLink',{});
     },
-    
+
     isExternal: function(){
         return typeof(this.getAppId()) == 'undefined';
     }
-    
+
 });
