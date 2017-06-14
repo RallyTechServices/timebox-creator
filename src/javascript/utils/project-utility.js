@@ -22,6 +22,9 @@ Ext.define('CA.agile.technicalservices.util.ProjectUtility',{
     getProjectRoot: function(projectID){
         return this.projectHash[projectID];
     },
+    getProjectName: function(projectID){
+        return this.projectHash[projectID].Name;
+    },
     _getProjectChildren: function(projectID){
         var childObjects = this.projectHash[projectID] && this.projectHash[projectID].children || [],
             children = Ext.Array.map(childObjects, function(co){ return co.ObjectID; });

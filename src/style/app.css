@@ -51,3 +51,15 @@
     border-top-right-radius: 0px!important;
     border-bottom-right-radius: 0px!important;
 }
+
+.error-text {
+   color: #EE1C25;
+   font-family: ProximaNova, helvetica, sans-serif;
+   font-size: 12px;
+}
+
+.non-error-text {
+  font-family: ProximaNova, helvetica, sans-serif;
+  font-size: 11px;
+  color: #888
+}
